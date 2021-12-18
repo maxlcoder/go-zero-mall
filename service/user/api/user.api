@@ -1,0 +1,43 @@
+info (
+	author: "maxlcoder"
+	date: "2021-12-18"
+	desc: "user 用户中心"
+)
+
+type (
+	RegisterReq {
+		Email    string `json:"email"`
+		Phone    string `json:"phone"`
+		Password string `json:"password"`
+	}
+
+	RegisterRsp {
+		Id    string `json:"id"`
+		Email string `json:"email"`
+		Phone string `json:"phone"`
+	}
+
+	LoginReq {
+		Email    string `json:"email"`
+		Phone    string `json:"phone"`
+		Password string `json:"password"`
+	}
+
+	LoginRsp {
+		Id    string `json:"id"`
+		Email string `json:"email"`
+		Phone string `json:"phone"`
+	}
+)
+
+service user {
+	
+	// 注册
+	@doc "register"
+	@handler register
+	post /api/register (RegisterReq) returns (RegisterRsp)
+	// 登录
+	@doc "login"
+	@handler login
+	post /api/login (LoginReq) returns (LoginRsp)
+}
