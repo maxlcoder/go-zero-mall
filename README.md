@@ -62,6 +62,38 @@ sqlx 的缓存，但是这个可以通过后续 gorm 自身设置来来启用缓
 中的配置是一一对应的，这个就有点像 `gin` 开发时使用的各种加载配置的扩展一样，go-zero 已经帮我们做了配置的处理。
 **这里要重点说明下，当前项目的配置都是本地测试，所以没有做配置的过滤，正确的是要在部署时做配置设置的，而不是应写在代码中**
 
+### docker 部署 api 和 rpc
+
+根据官方 [介绍](https://go-zero.dev/cn/goctl-other.html) 这里生成 api 和 rpc 两个 Dockerfile 文件
+
+```shell
+# 生成 Dockerfile
+$ cd service/user/api && goctl docker -go user.go
+$ cd service/user/rpc && goctl docker -go user.go
+
+# 运行 mysql 容器
+$ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
+
+# 运行 etcd 容器
+$ docker run -itd --name Etcd --env ALLOW_NONE_AUTHENTICATION=yes bitnami/etcd
+
+# 新建镜像
+$ cd ../go-zero-mall
+$ docker build -t go-zero-mall-user-api:v1 -f service/user/api/Dockerfile .
+$ docker build -t go-zero-mall-user-rpc:v1 -f service/user/rpc/Dockerfile .
+
+
+# 开不同窗口启动 api 和 rpc 镜像
+$ docker run --rm -it -p 8080:8080 go-zero-mall-user-rpc:v1
+$ docker run --rm -it -p 8888:8888 go-zero-mall-user-api:v1
+```
+
+这期间主要是控制好配置
+1. 启动 etcd 容器获取 etcd 的 ip 
+2. 启动 mysql 容器获取 mysql 的 ip，
+3. 替换掉 api 和 rpc 中的关于 etcd 和 mysql 的 ip （之前的是本地的配置）
+4. 由于默认的 rpc 是监听的 127.0.0.1 的 host，镜像之后，是用的容器的 ip 所以这里 rpc 的监听是需要缓换成 0.0.0.0 的
+
 ### 待办
 
 目前 api 和 rpc 的调用过程已经处理完成了，如果要对 go-zero 有较深的理解，
