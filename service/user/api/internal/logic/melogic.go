@@ -2,8 +2,9 @@ package logic
 
 import (
 	"context"
-	"go-zero-mall/common/errorx"
-	"go-zero-mall/service/user/model"
+	"encoding/json"
+	"fmt"
+	"go-zero-mall/service/user/rpc/userclient"
 
 	"go-zero-mall/service/user/api/internal/svc"
 	"go-zero-mall/service/user/api/internal/types"
@@ -27,14 +28,30 @@ func NewMeLogic(ctx context.Context, svcCtx *svc.ServiceContext) MeLogic {
 
 func (l *MeLogic) Me(req types.MeReq) (resp *types.MeRsp, err error) {
 	logx.Infof("user_id: %v", l.ctx.Value("user_id"))
+	logx.Infof(l.svcCtx.Config.LogConf.Mode)
 	userId := l.ctx.Value("user_id")
-	var user model.User
-	result := l.svcCtx.DbEngin.Where("id", userId).First(&user)
-	if result.Error != nil {
-		return nil, errorx.NewDefaultError(result.Error.Error())
+	// api 直接数据库取值
+	//var user model.User
+	//result := l.svcCtx.DbEngin.Where("id", userId).First(&user)
+	//if result.Error != nil {
+	//	return nil, errorx.NewDefaultError(result.Error.Error())
+	//}
+
+	// 调用 rpc 服务
+	userIdNumber := json.Number(fmt.Sprintf("%v", userId))
+	userIdInt, err := userIdNumber.Int64()
+	if err != nil {
+		return nil, err
 	}
+	userRsp, err := l.svcCtx.UserRpc.GetUser(l.ctx, &userclient.IdReq{
+		Id: userIdInt,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	return &types.MeRsp{
-		Id: int64(user.ID),
-		Email: user.Email,
+		Id: userRsp.Id,
+		Email: userRsp.Email,
 	}, nil
 }

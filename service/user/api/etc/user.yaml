@@ -1,7 +1,14 @@
 Name: user
 Host: 0.0.0.0
 Port: 8888
-DataSourceName: root:123456@(127.0.0.1:3306)/go-zero?charset=utf8mb4
+DataSourceName: root:123456@(172.17.0.2:3306)/go-zero?charset=utf8mb4
 Auth:
   AccessSecret: 243223ffslsfsldfl412fdsfsdf
   AccessExpire: 3600
+UserRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
+LogConf:
+  Mode: file

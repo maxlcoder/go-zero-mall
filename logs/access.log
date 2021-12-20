@@ -1,0 +1,5 @@
+{"@timestamp":"2021-12-20T12:17:30.173+08","level":"info","content":"[HTTP] GET - 401 - /api/me - [::1]:65383 - PostmanRuntime/7.28.4 - 0.2ms","trace":"d5e9624afe3c44372effd9434220dfbe","span":"df86836542a167d9"}
+{"@timestamp":"2021-12-20T12:17:33.778+08","level":"info","content":"[HTTP] POST - 200 - /api/login - [::1]:65383 - PostmanRuntime/7.28.4 - 64.6ms","trace":"ec317fc41005f1a4db7a7b8f61534a9a","span":"a0bf813dc475b01f"}
+{"@timestamp":"2021-12-20T12:18:09.517+08","level":"info","content":"user_id: 1"}
+{"@timestamp":"2021-12-20T12:18:09.517+08","level":"info","content":"file"}
+{"@timestamp":"2021-12-20T12:18:09.568+08","level":"info","content":"[HTTP] GET - 200 - /api/me - [::1]:65383 - PostmanRuntime/7.28.4 - 51.6ms","trace":"2836ffb44ac980dba9201b028af68d1b","span":"004e48e200971c1a"}
