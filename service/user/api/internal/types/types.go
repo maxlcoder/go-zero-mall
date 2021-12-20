@@ -3,24 +3,37 @@ package types
 
 type RegisterReq struct {
 	Email    string `json:"email"`
+	Name     string `json:"name"`
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
 
 type RegisterRsp struct {
-	Id    string `json:"id"`
+	Id    int64  `json:"id"`
 	Email string `json:"email"`
-	Phone string `json:"phone"`
+	Name  string `json:"name"`
 }
 
 type LoginReq struct {
 	Email    string `json:"email"`
-	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
 
 type LoginRsp struct {
-	Id    string `json:"id"`
+	Id           int64  `json:"id"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
+
+type MeReq struct {
+}
+
+type MeRsp struct {
+	Id    int64  `json:"id"`
+	Name  string `json:"name"`
 	Email string `json:"email"`
 	Phone string `json:"phone"`
 }

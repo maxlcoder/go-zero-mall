@@ -1,3 +1,7 @@
 Name: user
 Host: 0.0.0.0
 Port: 8888
+DataSourceName: root:123456@(127.0.0.1:3306)/go-zero?charset=utf8mb4
+Auth:
+  AccessSecret: 243223ffslsfsldfl412fdsfsdf
+  AccessExpire: 3600

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"go-zero-mall/response"
 	"net/http"
 
 	"github.com/tal-tech/go-zero/rest/httpx"
@@ -22,7 +23,7 @@ func loginHandler(ctx *svc.ServiceContext) http.HandlerFunc {
 		if err != nil {
 			httpx.Error(w, err)
 		} else {
-			httpx.OkJson(w, resp)
+			response.Response(w, resp, err)
 		}
 	}
 }

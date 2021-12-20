@@ -7,31 +7,47 @@ info (
 type (
 	RegisterReq {
 		Email    string `json:"email"`
+		Name     string `json:"name"`
 		Phone    string `json:"phone"`
 		Password string `json:"password"`
 	}
 
 	RegisterRsp {
-		Id    string `json:"id"`
+		Id    int64  `json:"id"`
 		Email string `json:"email"`
-		Phone string `json:"phone"`
+		Name  string `json:"name"`
 	}
 
 	LoginReq {
 		Email    string `json:"email"`
-		Phone    string `json:"phone"`
 		Password string `json:"password"`
 	}
 
 	LoginRsp {
-		Id    string `json:"id"`
+		Id           int64  `json:"id"`
+		Name         string `json:"name"`
+		Email        string `json:"email"`
+		AccessToken  string `json:"access_token"`
+		AccessExpire int64  `json:"access_expire"`
+		RefreshAfter int64  `json:"refresh_after"`
+	}
+
+	MeReq {
+	}
+
+	MeRsp {
+		Id    int64  `json:"id"`
+		Name  string `json:"name"`
 		Email string `json:"email"`
 		Phone string `json:"phone"`
 	}
 )
 
+@server (
+	middleware: Example
+)
+
 service user {
-	
 	// 注册
 	@doc "register"
 	@handler register
@@ -40,4 +56,14 @@ service user {
 	@doc "login"
 	@handler login
 	post /api/login (LoginReq) returns (LoginRsp)
+}
+
+@server (
+	jwt: Auth
+)
+service user {
+	// 个人中心
+	@doc "me"
+	@handler me
+	get /api/me (MeReq) returns (MeRsp)
 }

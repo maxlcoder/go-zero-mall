@@ -11,17 +11,31 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Example},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/api/register",
+					Handler: registerHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/api/login",
+					Handler: loginHandler(serverCtx),
+				},
+			}...,
+		),
+	)
+
+	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodPost,
-				Path:    "/api/register",
-				Handler: registerHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/login",
-				Handler: loginHandler(serverCtx),
+				Method:  http.MethodGet,
+				Path:    "/api/me",
+				Handler: meHandler(serverCtx),
 			},
 		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }
